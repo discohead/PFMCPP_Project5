@@ -1,3 +1,4 @@
+#include <iostream>
 /*
 Project 5: Part 1 / 4
  video Chapter 2 - Part 12
@@ -30,25 +31,112 @@ Project 5: Part 1 / 4
 /*
  copied UDT 1:
  */
+struct Oscillator
+{
+    float frequency = 440.0;
+    float phase = 0.0;
+    float amplitude = 1.0;
+    unsigned int waveType = 0;
 
+    void play();
+    void stop()
+    {
+        std::cout << "STOP" << std::endl;
+    }
+    
+    ~Oscillator()
+    {
+        std::cout << "Oscillator" << std::endl;
+    }
+};
 /*
  copied UDT 2:
  */
+struct Envelope
+{
+    float attack = 0.1f;
+    float decay = 0.1f;
+    float sustain = 1.0f;
+    float release = 0.5f;
+    float amplitude = 1.0f;
 
+    void trigger();
+    void reset()
+    {
+        std::cout << "RESET" << std::endl;
+    }
+    
+    ~Envelope()
+    {
+        std::cout << "Envelope" << std::endl;
+    }
+};
 /*
  copied UDT 3:
  */
+struct Lamp
+{
+    bool on = false;
 
+    struct Bulb
+    {
+        float brightness = 100.0f;
+        float warmth = 0.5f;
+    };
+
+    void changeBulb(Bulb bulb);
+    void flipSwitch();
+    
+    ~Lamp()
+    {
+        std::cout << "Lamp" << std::endl;
+    }
+};
 /*
  new UDT 4:
  */
-
+struct ComplexOscillator
+{
+    Oscillator primaryOsc;
+    Oscillator modulatorOsc;
+    
+    void play()
+    {
+        primaryOsc.play();
+        modulatorOsc.play();
+    }
+    void stop()
+    {
+        primaryOsc.stop();
+        modulatorOsc.stop();
+    }
+    
+    ~ComplexOscillator()
+    {
+        std::cout << "ComplexOscillator" << std::endl;
+        stop();
+    }
+};
 /*
  new UDT 5:
  */
+struct Synthesizer
+{
+    ComplexOscillator oscillator;
+    Envelope filterEnv;
+    Envelope ampEnv;
+    
+    ~Synthesizer()
+    {
+        std::cout << "Synthesizer" << std::endl;
+        filterEnv.reset();
+        ampEnv.reset();
+    }
+};
 
-#include <iostream>
 int main()
 {
+    ComplexOscillator cOsc = ComplexOscillator();
+    Synthesizer synth = Synthesizer();
     std::cout << "good to go!" << std::endl;
 }
